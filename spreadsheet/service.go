@@ -95,6 +95,7 @@ func (s *Service) InsertRow(values ...interface{}) error {
 				Values:         [][]interface{}{values},
 			},
 		).
+		//ResponseDateTimeRenderOption("FORMATTED_STRING").
 		InsertDataOption(InsertDataOptionInsert).
 		ValueInputOption(ValueInputOptionRaw).
 		Context(s.context).

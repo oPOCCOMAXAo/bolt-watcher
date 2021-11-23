@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "command": "go build -o .bin/app main.go",
+      "type": "shell",
+      "args": [],
+      "problemMatcher": ["$go"],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    }
+  ]
+}

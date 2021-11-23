@@ -2,4 +2,4 @@ package api
 
 import "time"
 
-const defaultTimeout = time.Second * 20
+const defaultTimeout = time.Second * 5
