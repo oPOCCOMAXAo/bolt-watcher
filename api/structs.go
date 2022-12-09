@@ -1,14 +1,23 @@
 package api
 
-type Point struct {
-	Latitude  float64
-	Longitude float64
+type PaymentMethod struct {
+	Type string `json:"type"`
+	ID   string `json:"id"`
 }
 
-type SearchCategory struct {
-	Id              int     `json:"id"`
-	Name            string  `json:"name"`
-	UpfrontPriceStr string  `json:"upfront_price_str"`
-	SurgeMultiplier float64 `json:"surge_multiplier"`
-	PickupEta       int     `json:"pickup_eta"`
+type Point struct {
+	Lat float64 `json:"lat"`
+	Lon float64 `json:"lng"`
+}
+
+type Route []Point
+
+type DefaultResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+type Category struct {
+	OrderSystem OrderSystem `json:"order_system"`
+	CategoryID  string      `json:"category_id"`
 }

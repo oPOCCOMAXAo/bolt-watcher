@@ -1,5 +1,14 @@
 package api
 
-import "time"
+import "errors"
 
-const defaultTimeout = time.Second * 5
+var (
+	DefaultPayment = PaymentMethod{
+		Type: "default",
+		ID:   "cash",
+	}
+)
+
+var (
+	ErrFailed = errors.New("failed")
+)
