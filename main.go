@@ -31,7 +31,7 @@ func main() {
 		New(watcher.Config{
 			API:     apiClient,
 			Store:   store,
-			Timeout: time.Minute,
+			Timeout: 30 * time.Second,
 		}).
 		Start(ctx)
 

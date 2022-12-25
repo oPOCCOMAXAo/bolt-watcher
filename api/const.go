@@ -7,6 +7,17 @@ var (
 		Type: "default",
 		ID:   "cash",
 	}
+
+	AllowedGroups = []string{
+		"standard",
+		"comfort",
+		"electric",
+		"animal_friendly",
+		"premium",
+		"child_seat",
+		"xl",
+		"economy",
+	}
 )
 
 var (

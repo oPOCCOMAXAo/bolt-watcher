@@ -5,6 +5,7 @@ import (
 	"context"
 	"net/url"
 
+	"github.com/opoccomaxao-go/generic-collection/slice"
 	"github.com/pkg/errors"
 )
 
@@ -35,6 +36,8 @@ type RideOption struct {
 	Group string `json:"group"`
 	Price struct {
 		SurgeStr       string `json:"surge_str"`
+		ActualStr      string `json:"actual_str"` // with discount
+		FirstLineHTML  string `json:"first_line_html"`
 		SecondLineHTML string `json:"second_line_html"`
 	} `json:"price"`
 }
@@ -92,13 +95,17 @@ func (api *API) GetRideOptions(ctx context.Context, route Route) ([]RideOptionPa
 				continue
 			}
 
-			if option.Group != "standard" {
+			if slice.IndexOf(AllowedGroups, option.Group) == -1 {
 				continue
 			}
 
 			resList = append(resList, RideOptionParsed{
-				ETA:        utils.TryParseInt(option.ETAInfo.PickupETAStr),
-				Price:      utils.TryParseInt(option.Price.SecondLineHTML),
+				ETA: utils.TryParseInt(option.ETAInfo.PickupETAStr),
+				Price: slice.FirstNonEmpty(
+					utils.TryParseInt(option.Price.SecondLineHTML),
+					utils.TryParseInt(option.Price.FirstLineHTML),
+					utils.TryParseInt(option.Price.ActualStr),
+				),
 				Multiplier: utils.TryParseFloat(option.Price.SurgeStr),
 			})
 		}
