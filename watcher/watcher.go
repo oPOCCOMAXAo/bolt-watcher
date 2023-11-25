@@ -1,7 +1,8 @@
 package watcher
 
 import (
-	"bolt-watcher/api"
+	"bolt-watcher/bolt"
+	"bolt-watcher/service"
 	"bolt-watcher/storage"
 	"bolt-watcher/utils"
 	"context"
@@ -9,8 +10,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/opoccomaxao-go/generic-collection/slice"
 	"github.com/pkg/errors"
+	"github.com/samber/lo"
 )
 
 type Watcher struct {
@@ -18,7 +19,7 @@ type Watcher struct {
 }
 
 type Config struct {
-	API     *api.API
+	Service *service.Service
 	Store   *storage.Storage
 	Timeout time.Duration
 }
@@ -69,9 +70,9 @@ func (w *Watcher) tick(ctx context.Context) error {
 }
 
 func (w *Watcher) processRoute(ctx context.Context, route *storage.RouteExt) error {
-	res, err := w.cfg.API.GetRideOptions(ctx,
-		slice.Map(route.Route, func(r storage.PointExt) api.Point {
-			return api.Point{Lat: r.Lat, Lon: r.Lon}
+	res, err := w.cfg.Service.GetRouteCosts(ctx,
+		lo.Map(route.Route, func(r storage.PointExt, _ int) bolt.Point {
+			return bolt.Point{Lat: r.Lat, Lon: r.Lon}
 		}),
 	)
 	if err != nil {

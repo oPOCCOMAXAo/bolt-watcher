@@ -1,7 +1,8 @@
 package main
 
 import (
-	"bolt-watcher/api"
+	"bolt-watcher/bolt"
+	"bolt-watcher/service"
 	"bolt-watcher/storage"
 	"bolt-watcher/watcher"
 	"context"
@@ -20,16 +21,18 @@ func main() {
 	ctx, cancelFn := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancelFn()
 
-	apiClient := api.NewAPI(os.Getenv("login"), os.Getenv("password"))
+	apiClient := bolt.New(os.Getenv("login"), os.Getenv("password"))
 
 	store, err := storage.New(os.Getenv("db"))
 	if err != nil {
 		log.Fatalf("%+v", err)
 	}
 
+	service := service.New(apiClient)
+
 	go watcher.
 		New(watcher.Config{
-			API:     apiClient,
+			Service: service,
 			Store:   store,
 			Timeout: 30 * time.Second,
 		}).

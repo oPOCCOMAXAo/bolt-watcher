@@ -1,4 +1,4 @@
-package api
+package bolt
 
 type OrderSystem string
 

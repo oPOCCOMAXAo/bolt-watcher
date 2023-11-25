@@ -6,8 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/opoccomaxao-go/generic-collection/slice"
-
+	"github.com/samber/lo"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -72,7 +71,7 @@ func (s *Storage) GetActiveRoutes(
 
 		resRoutes = append(resRoutes, &RouteExt{
 			ID: k,
-			Route: slice.Map(pts, func(p *RoutePointCombo) PointExt {
+			Route: lo.Map(pts, func(p *RoutePointCombo, _ int) PointExt {
 				return PointExt{
 					Lat: p.Lat,
 					Lon: p.Lon,
@@ -87,7 +86,7 @@ func (s *Storage) GetActiveRoutes(
 func (s *Storage) Log(ctx context.Context, log Log) error {
 	return s.db.WithContext(ctx).
 		Clauses(clause.OnConflict{
-			DoUpdates: clause.Assignments(map[string]interface{}{
+			DoUpdates: clause.Assignments(map[string]any{
 				"eta":        gorm.Expr("GREATEST(VALUES(eta),eta)"),
 				"price":      gorm.Expr("GREATEST(VALUES(price),price)"),
 				"multiplier": gorm.Expr("GREATEST(VALUES(multiplier),multiplier)"),

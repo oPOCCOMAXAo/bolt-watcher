@@ -1,14 +1,16 @@
-package api
+package service
 
-import "errors"
+import (
+	"bolt-watcher/bolt"
+)
 
 var (
-	DefaultPayment = PaymentMethod{
+	DefaultPayment = bolt.PaymentMethod{
 		Type: "default",
 		ID:   "cash",
 	}
 
-	AllowedGroups = []string{
+	AllowedCostGroups = []string{
 		"standard",
 		"comfort",
 		"electric",
@@ -18,8 +20,4 @@ var (
 		"xl",
 		"economy",
 	}
-)
-
-var (
-	ErrFailed = errors.New("failed")
 )
