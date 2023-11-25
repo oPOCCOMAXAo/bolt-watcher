@@ -10,6 +10,11 @@
       "presentation": {
         "reveal": "always"
       },
+      "options": {
+        "env": {
+          "CGO_ENABLED": "0"
+        }
+      },
       "group": "build"
     }
   ]
